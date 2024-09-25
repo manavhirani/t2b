@@ -3,34 +3,56 @@ import sys
 
 # Messages
 messages = {
-    "usage": "Usage as follows:\n\t$ python t2b.py <text0> <text1> ... <textn>\n",
+    "help": "Usage as follows:\n\t$ python t2b.py <text0> <text1> ... <textn>\n",
     "error": {
         "flag": "invalid flag, try again\n",
     },
 }
 
-
-def chr2binary(ch: chr, pad=8):
-    return format(ord(ch), "b").zfill(pad)
+PAD = 8
 
 
-def text2binary(text: str):
-    return "".join(list(map(chr2binary, text))) + "\n"
+def chr2binary(ch: chr):
+    return format(ord(ch), "b").zfill(PAD)
+
+
+def word2binary(word: str):
+    return "".join(list(map(chr2binary, word))) + "\n"
+
+
+def print_binary(word: str):
+    sys.stdout.write(word2binary(word))
+
+
+def split_print(text: str):
+    for word in text.split():
+        print_binary(word)
+
+
+def help():
+    sys.stdout.write(messages["help"] + "\n")
+
+
+def error_message():
+    sys.stdout.write(messages["error"])
 
 
 if __name__ == "__main__":
 
-    for i, arg in enumerate(sys.argv):
-        if i == 0:
-            continue
-        if i == 1 and arg[0] == "-":  # Check if there's a flag
-            if arg[1] == "h":  # Help flag
-                sys.stdout.write(messages["usage"])
-                sys.exit(0)
-
-            sys.stdout.write(messages["error"]["flag"])
-            sys.exit(1)
-
-        sys.stdout.write(text2binary(arg))
-
+    argv = sys.argv
+    idx = 1
+    # Check for flags
+    if argv[1][0] == "-":
+        flag = argv[1][1]
+        if flag == "h":
+            help()
+            sys.exit(0)
+        if flag == "s":
+            split_print(argv[2])
+            sys.exit(0)
+        if flag == "p":
+            PAD = int(argv[2])
+            idx = 3
+    for text in argv[idx:]:
+        print_binary(text)
     sys.exit(0)
