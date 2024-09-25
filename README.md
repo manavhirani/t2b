@@ -12,9 +12,11 @@ Designed as a simple command line tool
 ```
 - Press -h for usage
 
-#### TODO:
+### TODO:
+
 [X] Add -s flag that can help split a string by whitespace
     e.g. "I am a book" -> ["I", "am", "a", "book"]
+
 [X] Add -p flag to set leading zero padding (min 8)
     e.g. p=8 -> 00010010, p=10 -> 0011010010
 
